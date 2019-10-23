@@ -1,0 +1,62 @@
+version: '3'
+###############################################################################
+# run 4 bitcoin nodes
+###############################################################################
+services:
+  node1:
+    image: bitcoinnode
+    container_name: node01
+    build: 
+      dockerfile: Dockerfile-bitcoind
+      context: ./node/
+    cap_add:
+      - ALL
+    command: bitcoind.sh 10.7.0.12 10.7.0.13 10.7.0.14
+    networks:
+      simnet:
+        ipv4_address: 10.7.0.11
+  node2:
+    image: bitcoinnode
+    container_name: node02
+    build: 
+      dockerfile: Dockerfile-bitcoind
+      context: ./node/
+    cap_add:
+      - ALL
+    command: bitcoind.sh 10.7.0.11 10.7.0.13 10.7.0.14
+    networks:
+      simnet:
+        ipv4_address: 10.7.0.12
+  node3:
+    image: bitcoinnode
+    container_name: node03
+    build: 
+      dockerfile: Dockerfile-bitcoind
+      context: ./node/
+    cap_add:
+      - ALL
+    command: bitcoind.sh 10.7.0.11 10.7.0.12 10.7.0.14
+    networks:
+      simnet:
+        ipv4_address: 10.7.0.13
+  node4:
+    image: bitcoinnode
+    container_name: node04
+    build: 
+      dockerfile: Dockerfile-bitcoind
+      context: ./node/
+    cap_add:
+      - ALL
+    command: bitcoind.sh 10.7.0.11 10.7.0.12 10.7.0.13
+    networks:
+      simnet:
+        ipv4_address: 10.7.0.14
+###############################################################################
+# create a local simnet 
+###############################################################################
+networks:
+  simnet:
+    driver: bridge
+    ipam:
+     config:
+       - subnet: 10.7.0.0/16
